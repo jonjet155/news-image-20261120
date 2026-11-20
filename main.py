@@ -20,8 +20,15 @@ def main():
     if not out_dir:
         print("MAKEFUN_OUTPUT_DIR is not set", file=sys.stderr)
         return 1
+    if not os.path.isfile(SRC):
+        print("entry.png is missing from the repository", file=sys.stderr)
+        return 1
     os.makedirs(out_dir, exist_ok=True)
-    shutil.copyfile(SRC, os.path.join(out_dir, "entry.png"))
+    dst = os.path.join(out_dir, "entry.png")
+    shutil.copyfile(SRC, dst)
+    if os.path.getsize(dst) != os.path.getsize(SRC):
+        print("copied entry.png has the wrong size", file=sys.stderr)
+        return 1
     return 0
 
 
